@@ -15,7 +15,7 @@ run {
     if (System.getProperty('os.name').toLowerCase().contains('mac')) jvmArgs += '-XstartOnFirstThread'
 }
 tasks.register('dist', Jar) {
-    archiveFileName = 'rogue-tetris-1.0.0.jar'
+    archiveFileName = 'rogue-tetris-1.0.1.jar'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest { attributes 'Main-Class': application.mainClass.get() }
     from sourceSets.main.output

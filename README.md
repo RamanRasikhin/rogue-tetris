@@ -6,13 +6,15 @@ A bachelor's thesis game by **Raman Rasikhin** combining falling-block puzzles w
 
 ## Play
 
-Download the JAR from [Releases](https://github.com/RamanRasikhin/rogue-tetris/releases). Requires **Java 17 or newer**:
+**Windows x64:** download `RogueTetris-Windows-x64.zip` from [Releases](https://github.com/RamanRasikhin/rogue-tetris/releases), extract the entire folder and double-click **start.bat**. This package includes Eclipse Temurin Java; no separate Java installation is needed.
+
+**JAR / other platforms:** requires **Java 17 or newer**:
 
 ```text
-java -jar rogue-tetris-1.0.0.jar
+java -jar rogue-tetris-1.0.1.jar
 ```
 
-On macOS use `java -XstartOnFirstThread -jar rogue-tetris-1.0.0.jar`. On Linux/macOS the desktop native libraries require a compatible graphical environment. The Windows build was smoke-tested; other operating systems were not tested.
+On macOS use `java -XstartOnFirstThread -jar rogue-tetris-1.0.1.jar`. On Linux/macOS the desktop native libraries require a compatible graphical environment. The Windows build was smoke-tested; other operating systems were not tested.
 
 ## How it works
 
@@ -35,6 +37,8 @@ On macOS use `java -XstartOnFirstThread -jar rogue-tetris-1.0.0.jar`. On Linux/m
 | assets | Credited CC BY graphics, OFL font and synthesized audio |
 | tools | Reproducible sound generation |
 
+The green **Code → Download ZIP** button downloads source code, not the ready-to-play Windows package. Its `start.bat` builds the game on first run and requires an installed **JDK 17+** plus internet access. The launcher logs build/startup errors under `logs/` rather than silently closing.
+
 ## Build and test
 
 Use JDK 17 or newer. The Gradle wrapper downloads dependencies on first use.
@@ -45,7 +49,7 @@ Use JDK 17 or newer. The Gradle wrapper downloads dependencies on first use.
 .\gradlew.bat lwjgl3:dist
 ```
 
-On Linux/macOS replace `.\gradlew.bat` with `./gradlew`. The distribution task creates `lwjgl3/build/libs/rogue-tetris-1.0.0.jar`.
+On Linux/macOS replace `.\gradlew.bat` with `./gradlew`. The distribution task creates `lwjgl3/build/libs/rogue-tetris-1.0.1.jar`.
 
 ## Controls
 

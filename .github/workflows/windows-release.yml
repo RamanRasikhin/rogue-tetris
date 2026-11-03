@@ -1,0 +1,41 @@
+name: Build Windows download
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - start.bat
+      - tools/package_windows.py
+      - tools/windows-runtime.json
+      - .github/workflows/windows-release.yml
+
+permissions:
+  contents: write
+
+jobs:
+  windows-package:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Build game and run tests
+        shell: pwsh
+        run: .\gradlew.bat core:test lwjgl3:dist --console=plain
+      - name: Package game with Java runtime
+        shell: pwsh
+        run: python tools/package_windows.py
+      - name: Publish Windows download
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view v1.0.1 --repo "${{ github.repository }}" *> $null
+          if ($LASTEXITCODE -ne 0) {
+            gh release create v1.0.1 --repo "${{ github.repository }}" --target "${{ github.sha }}" --title "RogueTetris 1.0.1 — Windows launcher fix" --notes-file docs/release-notes.md
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+          gh release upload v1.0.1 dist/RogueTetris-Windows-x64.zip lwjgl3/build/libs/rogue-tetris-1.0.1.jar --repo "${{ github.repository }}" --clobber

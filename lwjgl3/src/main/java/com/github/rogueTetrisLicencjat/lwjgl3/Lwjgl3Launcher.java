@@ -11,7 +11,20 @@ public class Lwjgl3Launcher {
     }
 
     private static void createApplication() {
-        new Lwjgl3Application(new RogueTetrisGDX(), getDefaultConfiguration());
+        boolean smoke = Boolean.getBoolean("rogueTetris.smoke");
+        RogueTetrisGDX app = smoke ? new RogueTetrisGDX() {
+            private int readyFrames;
+            @Override public void render() {
+                super.render();
+                if (getAssets().background != null && ++readyFrames >= 10) {
+                    System.out.println("Desktop startup smoke passed");
+                    com.badlogic.gdx.Gdx.app.exit();
+                }
+            }
+        } : new RogueTetrisGDX();
+        Lwjgl3ApplicationConfiguration configuration = getDefaultConfiguration();
+        configuration.setInitialVisible(!smoke);
+        new Lwjgl3Application(app, configuration);
     }
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
