@@ -1,0 +1,18 @@
+allprojects {
+    repositories { mavenCentral() }
+    version = '1.0.0'
+}
+subprojects {
+    apply plugin: 'java-library'
+    java { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
+    tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+}
+project(':core') {
+    dependencies {
+        api 'com.badlogicgames.gdx:gdx:1.12.1'
+        api 'com.badlogicgames.gdx:gdx-freetype:1.12.1'
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.8.1'
+    }
+    test { useJUnitPlatform() }
+}

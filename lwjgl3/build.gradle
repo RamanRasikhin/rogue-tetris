@@ -1,0 +1,25 @@
+plugins { id 'application' }
+application {
+    mainClass = 'com.github.rogueTetrisLicencjat.lwjgl3.Lwjgl3Launcher'
+    applicationName = 'rogue-tetris'
+}
+sourceSets.main.resources.srcDirs += [rootProject.file('assets')]
+dependencies {
+    implementation project(':core')
+    implementation 'com.badlogicgames.gdx:gdx-backend-lwjgl3:1.12.1'
+    implementation 'com.badlogicgames.gdx:gdx-platform:1.12.1:natives-desktop'
+    implementation 'com.badlogicgames.gdx:gdx-freetype-platform:1.12.1:natives-desktop'
+}
+run {
+    workingDir = rootProject.file('assets')
+    if (System.getProperty('os.name').toLowerCase().contains('mac')) jvmArgs += '-XstartOnFirstThread'
+}
+tasks.register('dist', Jar) {
+    archiveFileName = 'rogue-tetris-1.0.0.jar'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest { attributes 'Main-Class': application.mainClass.get() }
+    from sourceSets.main.output
+    dependsOn configurations.runtimeClasspath
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    exclude 'META-INF/*.SF', 'META-INF/*.RSA', 'META-INF/*.DSA'
+}
